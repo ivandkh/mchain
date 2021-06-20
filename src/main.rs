@@ -1,0 +1,17 @@
+fn main() {
+    let text = String::from("It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like).");
+
+    let ngrams = get_ngrams(4, &text);
+    println!("{:?}",map);
+}
+fn get_ngrams(n: usize, text: &str ) -> Vec<String> {
+    let mut ngrams = Vec::new();
+    let words: Vec<&str> = text.split_whitespace().collect();
+
+    for i in 0..words.len()-n {
+        let ngram = words[i..i+n].join(" ");
+        ngrams.push(ngram);
+    }
+
+    ngrams
+}
