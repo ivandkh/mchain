@@ -1,7 +1,7 @@
 use std::collections::HashMap;
 
 pub struct Model<'a> {
-    chain:HashMap<&'a str, Vec<&'a str>>,
+    pub chain:HashMap<&'a str, Vec<&'a str>>,
     startwords: Option<Vec<&'a str>>,
     stopwords: Option<Vec<&'a str>>,
     seq_length: i32,
@@ -19,8 +19,16 @@ impl<'a> Model<'a> {
         }
     }
 
-    pub fn fit_ngrams() {
-        unimplemented!()
+    pub fn fit_ngrams(&mut self, ngrams:Vec<Vec<&'a str>> ) {
+        let n = ngrams[0].len();
+
+        for ngram in ngrams{
+            let key = ngram[0];
+            let val = Vec::from(&ngram[1..]);
+            //TODO:
+            //Get around this vector recreation
+            self.chain.insert(key, val);
+        }
     }
 
     pub fn fit_startwords() {
