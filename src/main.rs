@@ -7,7 +7,8 @@ fn main() {
     let mut chain = model::Model::new(20);
     chain.fit_ngrams(ngrams);
 
-    println!("{:?}",chain.chain );
+    let output = chain.generate(Some(String::from("None")));
+    println!("{:?}", output);
 }
 
 fn get_ngrams(n: usize, text: &str ) -> Vec<Vec<&str>> {
