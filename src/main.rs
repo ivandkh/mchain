@@ -7,7 +7,7 @@ fn main() {
     let mut chain = model::Model::new(20);
     chain.fit_ngrams(ngrams);
 
-    let output = chain.generate(Some(String::from("None")));
+    let output = chain.generate(Some(&String::from("It")));
     println!("{:?}", output);
 }
 
