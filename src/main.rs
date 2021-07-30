@@ -7,12 +7,10 @@ fn main() {
     let mut chain = model::Model::new(20);
     chain.fit_ngrams(ngrams);
 
-    //println!("{:?}",chain.chain );
+    println!("{:?}",chain.chain );
 }
 
 fn get_ngrams(n: usize, text: &str ) -> Vec<Vec<&str>> {
-    //TODO:
-    //Remove excessive nested Vec<&str>. Use [&str] instead.
 
     let mut ngrams = Vec::new();
     let words: Vec<&str> = text.split_whitespace().collect();
