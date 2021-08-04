@@ -23,7 +23,6 @@ impl<'a> Model<'a> {
     pub fn fit_ngrams(&mut self, ngrams: Vec<Vec<&'a str>>) {
         for ngram in ngrams {
             let key = ngram[0];
-            //let new_val = Vec::from(&ngram[1..]);
             let last_word = ngram[ngram.len() - 1].to_string();
             let new_val = ngram[1..].join(" ");
 
@@ -34,7 +33,7 @@ impl<'a> Model<'a> {
                 }
             }
         }
-        self.is_fitted = true
+        self.is_fitted = true;
     }
 
     #[allow(dead_code)]
@@ -53,20 +52,18 @@ impl<'a> Model<'a> {
         let mut output = String::new();
 
         //if start word specified in generate() params
-        if let Some(mut word) = start_word {
-            output.push_str(&format!("{} ", &word));
+        if let Some(mut start_word) = start_word {
+            output.push_str(&format!("{} ", &start_word));
 
             for _ in 1..self.seq_length {
-                match self.chain.get(word) {
+                match self.chain.get(start_word) {
                     Some(ngrams) => {
                         let mut rng = rand::thread_rng();
-                        word = ngrams.choose(&mut rng).unwrap();
-                        output.push_str(&format!("{} ", &word));
+                        let (ngram, end_word) = ngrams.choose(&mut rng).unwrap();
+                        output.push_str(&format!("{} ", &ngram));
+                        start_word = end_word;
                     }
-                    None => {
-                        println!("!!!!{:?}===", word);
-                        break;
-                    }
+                    None => break,
                 }
             }
         //if model has a list of fitted start words
