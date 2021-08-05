@@ -3,7 +3,7 @@ use std::collections::HashMap;
 
 pub struct Model<'a> {
     pub chain: HashMap<&'a str, Vec<(String, String)>>,
-    startwords: Option<Vec<&'a str>>,
+    startwords: Option<Vec<String>>,
     _stopwords: Option<Vec<&'a str>>,
     seq_length: i32,
     is_fitted: bool,
@@ -36,9 +36,8 @@ impl<'a> Model<'a> {
         self.is_fitted = true;
     }
 
-    #[allow(dead_code)]
-    pub fn fit_startwords() {
-        unimplemented!()
+    pub fn fit_startwords(&mut self, startwords: Vec<String>) {
+        self.startwords = Some(startwords);
     }
 
     #[allow(dead_code)]
