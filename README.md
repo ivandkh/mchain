@@ -1,1 +1,1 @@
-Simple Markov chain jokes generator in Rust.
+Simple Markov chain written in Rust.
