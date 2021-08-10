@@ -1,3 +1,4 @@
+use super::tools; //move this import to test module
 use rand::seq::SliceRandom;
 use std::collections::HashMap;
 
@@ -45,33 +46,64 @@ impl<'a> Model<'a> {
         unimplemented!()
     }
 
-    pub fn generate(self, start_word: Option<&str>) -> String {
+    pub fn generate(self, start_word: Option<&String>) -> String {
         assert!(self.is_fitted, "Model not fitted.");
 
-        let mut output = String::new();
+        //let mut output = String::new();
+        let mut rng = rand::thread_rng();
+        let output = start_word.unwrap_or_else(|| {
+            self.startwords
+                .as_ref()
+                .expect("No start words specified.")
+                .choose(&mut rng)
+                .unwrap()
+        });
 
-        //if start word specified in generate() params
-        if let Some(mut start_word) = start_word {
-            output.push_str(&format!("{} ", &start_word));
+        // //if start word specified in generate() params
+        // if let Some(mut start_word) = start_word {
+        //     output.push_str(&format!("{} ", &start_word));
+        //
+        //     for _ in 1..self.seq_length {
+        //         match self.chain.get(start_word) {
+        //             Some(ngrams) => {
+        //                 let mut rng = rand::thread_rng();
+        //                 let (ngram, end_word) = ngrams.choose(&mut rng).unwrap();
+        //                 output.push_str(&format!("{} ", &ngram));
+        //                 start_word = end_word;
+        //             }
+        //             None => break,
+        //         }
+        //     }
+        // //if model has a list of fitted start words
+        // } else if let Some(_words) = self.startwords {
+        //     unreachable!()
+        // } else {
+        //     panic!("No start words specified.")
+        // }
 
-            for _ in 1..self.seq_length {
-                match self.chain.get(start_word) {
-                    Some(ngrams) => {
-                        let mut rng = rand::thread_rng();
-                        let (ngram, end_word) = ngrams.choose(&mut rng).unwrap();
-                        output.push_str(&format!("{} ", &ngram));
-                        start_word = end_word;
-                    }
-                    None => break,
-                }
-            }
-        //if model has a list of fitted start words
-        } else if let Some(_words) = self.startwords {
-            unreachable!()
-        } else {
-            panic!("No start words specified.")
-        }
+        //*output + ":)"
+        String::new()
+    }
+}
 
-        output + ":)"
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    #[should_panic(expected = "Model not fitted.")]
+    fn test_not_fitted_panic() {
+        let mut chain = Model::new(20);
+        chain.generate(None);
+    }
+
+    #[test]
+    #[should_panic(expected = "No start words specified.")]
+    fn test_no_startword_panic() {
+        let mut chain = Model::new(20);
+        let text = String::from("It is a long established.");
+        let ngrams = super::tools::get_ngrams(2, &text);
+        chain.fit_ngrams(ngrams);
+        chain.generate(None);
     }
 }
