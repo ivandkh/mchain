@@ -2,9 +2,9 @@ use rand::seq::SliceRandom;
 use std::collections::HashMap;
 
 pub struct Model {
-    pub chain: HashMap<String, Vec<(String, String)>>,
-    pub startwords: Option<Vec<String>>,
-    pub stopwords: Option<Vec<String>>,
+    chain: HashMap<String, Vec<(String, String)>>,
+    startwords: Option<Vec<String>>,
+    stopwords: Option<Vec<String>>,
     seq_length: i32,
     is_fitted: bool,
 }
