@@ -1,16 +1,16 @@
 use rand::seq::SliceRandom;
 use std::collections::HashMap;
 
-pub struct Model<'a> {
-    pub chain: HashMap<&'a str, Vec<(String, String)>>,
+pub struct Model {
+    pub chain: HashMap<String, Vec<(String, String)>>,
     startwords: Option<Vec<String>>,
-    _stopwords: Option<Vec<&'a str>>,
+    _stopwords: Option<Vec<String>>,
     seq_length: i32,
     is_fitted: bool,
 }
 
-impl<'a> Model<'a> {
-    pub fn new(seq_length: i32) -> Model<'a> {
+impl Model {
+    pub fn new(seq_length: i32) -> Model {
         Model {
             chain: HashMap::new(),
             startwords: None,
@@ -20,7 +20,7 @@ impl<'a> Model<'a> {
         }
     }
 
-    pub fn fit_ngrams(&mut self, ngrams: Vec<Vec<&'a str>>) {
+    pub fn fit_ngrams(&mut self, ngrams: Vec<Vec<&str>>) {
         for ngram in ngrams {
             let key = ngram[0];
             let last_word = ngram[ngram.len() - 1].to_string();
@@ -29,7 +29,8 @@ impl<'a> Model<'a> {
             match self.chain.get_mut(key) {
                 Some(val) => val.push((new_val, last_word)),
                 None => {
-                    self.chain.insert(key, vec![(new_val, last_word)]);
+                    self.chain
+                        .insert(key.to_string(), vec![(new_val, last_word)]);
                 }
             }
         }
@@ -48,40 +49,33 @@ impl<'a> Model<'a> {
     pub fn generate(self, start_word: Option<&String>) -> String {
         assert!(self.is_fitted, "Model not fitted.");
 
-        //let mut output = String::new();
+        let mut output = String::new();
         let mut rng = rand::thread_rng();
-        let output = start_word.unwrap_or_else(|| {
+
+        //unwrap start_word if specified in generate() params
+        //choose random_start word from model.startwords else
+        //panic otherwise
+        let mut word = start_word.unwrap_or_else(|| {
             self.startwords
                 .as_ref()
                 .expect("No start words specified.")
                 .choose(&mut rng)
                 .unwrap()
         });
+        output.push_str(&format!("{} ", word));
 
-        // //if start word specified in generate() params
-        // if let Some(mut start_word) = start_word {
-        //     output.push_str(&format!("{} ", &start_word));
-        //
-        //     for _ in 1..self.seq_length {
-        //         match self.chain.get(start_word) {
-        //             Some(ngrams) => {
-        //                 let mut rng = rand::thread_rng();
-        //                 let (ngram, end_word) = ngrams.choose(&mut rng).unwrap();
-        //                 output.push_str(&format!("{} ", &ngram));
-        //                 start_word = end_word;
-        //             }
-        //             None => break,
-        //         }
-        //     }
-        // //if model has a list of fitted start words
-        // } else if let Some(_words) = self.startwords {
-        //     unreachable!()
-        // } else {
-        //     panic!("No start words specified.")
-        // }
+        for _ in 1..self.seq_length {
+            match self.chain.get(word) {
+                Some(ngrams) => {
+                    let (ngram, end_word) = ngrams.choose(&mut rng).unwrap();
+                    output.push_str(&format!("{} ", &ngram));
+                    word = end_word;
+                }
+                None => break,
+            }
+        }
 
-        //*output + ":)"
-        String::new()
+        output + ":)"
     }
 }
 
