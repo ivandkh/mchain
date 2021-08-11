@@ -1,4 +1,3 @@
-use super::tools; //move this import to test module
 use rand::seq::SliceRandom;
 use std::collections::HashMap;
 
@@ -89,6 +88,7 @@ impl<'a> Model<'a> {
 #[cfg(test)]
 mod tests {
     use super::*;
+    use crate::tools;
 
     #[test]
     #[should_panic(expected = "Model not fitted.")]
@@ -102,7 +102,7 @@ mod tests {
     fn test_no_startword_panic() {
         let mut chain = Model::new(20);
         let text = String::from("It is a long established.");
-        let ngrams = super::tools::get_ngrams(2, &text);
+        let ngrams = tools::get_ngrams(2, &text);
         chain.fit_ngrams(ngrams);
         chain.generate(None);
     }
