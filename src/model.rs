@@ -3,8 +3,8 @@ use std::collections::HashMap;
 
 pub struct Model {
     pub chain: HashMap<String, Vec<(String, String)>>,
-    startwords: Option<Vec<String>>,
-    stopwords: Option<Vec<String>>,
+    pub startwords: Option<Vec<String>>,
+    pub stopwords: Option<Vec<String>>,
     seq_length: i32,
     is_fitted: bool,
 }
@@ -38,12 +38,18 @@ impl Model {
     }
 
     pub fn fit_startwords(&mut self, startwords: Vec<String>) {
-        self.startwords = Some(startwords);
+        match &mut self.startwords {
+            Some(old) => old.extend(startwords),
+            None => self.startwords = Some(startwords),
+        }
     }
 
     pub fn fit_stopwords(&mut self, stopwords: Vec<String>) {
-        //TODO Add stopwords to generate()
-        self.stopwords = Some(stopwords);
+        /*!  Stopwords are not supported yet.*/
+        match &mut self.stopwords {
+            Some(old) => old.extend(stopwords),
+            None => self.stopwords = Some(stopwords),
+        }
     }
 
     pub fn generate(&self, start_word: Option<&String>) -> String {
