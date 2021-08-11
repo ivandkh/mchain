@@ -10,10 +10,16 @@ pub fn get_ngrams(n: usize, text: &str) -> Vec<Vec<&str>> {
     ngrams
 }
 
-pub fn get_startwords(text: &str) -> Vec<String> {
+pub fn get_stopwords(text: &str) -> Vec<String> {
     text.split_whitespace()
         .filter(|word| word.contains("."))
         .map(|word| word.replace(".", ""))
+        .collect()
+}
+
+pub fn get_startwords(text: &str) -> Vec<String> {
+    text.split(". ")
+        .map(|sent| sent.split_once(" ").unwrap_or(("", "")).0.to_string())
         .collect()
 }
 

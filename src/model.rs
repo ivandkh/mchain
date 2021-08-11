@@ -4,7 +4,7 @@ use std::collections::HashMap;
 pub struct Model {
     pub chain: HashMap<String, Vec<(String, String)>>,
     startwords: Option<Vec<String>>,
-    _stopwords: Option<Vec<String>>,
+    stopwords: Option<Vec<String>>,
     seq_length: i32,
     is_fitted: bool,
 }
@@ -14,7 +14,7 @@ impl Model {
         Model {
             chain: HashMap::new(),
             startwords: None,
-            _stopwords: None,
+            stopwords: None,
             seq_length,
             is_fitted: false,
         }
@@ -41,12 +41,12 @@ impl Model {
         self.startwords = Some(startwords);
     }
 
-    #[allow(dead_code)]
-    pub fn fit_stopwords() {
-        unimplemented!()
+    pub fn fit_stopwords(&mut self, stopwords: Vec<String>) {
+        //TODO Add stopwords to generate()
+        self.stopwords = Some(stopwords);
     }
 
-    pub fn generate(self, start_word: Option<&String>) -> String {
+    pub fn generate(&self, start_word: Option<&String>) -> String {
         assert!(self.is_fitted, "Model not fitted.");
 
         let mut output = String::new();
