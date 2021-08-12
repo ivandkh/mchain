@@ -59,7 +59,7 @@ impl Model {
         let mut rng = rand::thread_rng();
 
         //unwrap start_word if specified in generate() params
-        //choose random_start word from model.startwords else
+        //choose random start_word from model.startwords else
         //panic otherwise
         let mut word = start_word.unwrap_or_else(|| {
             self.startwords
