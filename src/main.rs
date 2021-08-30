@@ -12,11 +12,9 @@ fn main() {
     let ngrams = mchain::tools::get_ngrams(4, &text);
     chain.fit_ngrams(ngrams);
 
-    //Optional: fit start and/or stop words to the Model
+    //Optional: fit startwords to the Model
     let startwords = mchain::tools::get_startwords(&text);
-    let stopwords = mchain::tools::get_stopwords(&text);
     chain.fit_startwords(startwords);
-    chain.fit_stopwords(stopwords);
 
     //Generate sequences
     let force_startword: Option<&String> = None;

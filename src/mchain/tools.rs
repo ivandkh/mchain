@@ -10,6 +10,7 @@ pub fn get_ngrams(n: usize, text: &str) -> Vec<Vec<&str>> {
     ngrams
 }
 
+#[allow(dead_code)]
 pub fn get_stopwords(text: &str) -> Vec<String> {
     text.split_whitespace()
         .filter(|word| word.contains("."))

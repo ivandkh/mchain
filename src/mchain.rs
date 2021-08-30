@@ -5,7 +5,7 @@ pub mod tools;
 pub struct Model {
     chain: HashMap<String, Vec<(String, String)>>,
     startwords: Option<Vec<String>>,
-    stopwords: Option<Vec<String>>,
+    _stopwords: Option<Vec<String>>,
     seq_length: i32,
     is_fitted: bool,
 }
@@ -15,7 +15,7 @@ impl Model {
         Model {
             chain: HashMap::new(),
             startwords: None,
-            stopwords: None,
+            _stopwords: None,
             seq_length,
             is_fitted: false,
         }
@@ -45,11 +45,12 @@ impl Model {
         }
     }
 
+    #[allow(dead_code)]
     pub fn fit_stopwords(&mut self, stopwords: Vec<String>) {
         /*!  Stopwords are not supported yet.*/
-        match &mut self.stopwords {
+        match &mut self._stopwords {
             Some(old) => old.extend(stopwords),
-            None => self.stopwords = Some(stopwords),
+            None => self._stopwords = Some(stopwords),
         }
     }
 
