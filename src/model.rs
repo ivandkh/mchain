@@ -1,6 +1,5 @@
 use rand::seq::SliceRandom;
 use std::collections::HashMap;
-pub mod tools;
 
 pub struct Model {
     chain: HashMap<String, Vec<(String, String)>>,
