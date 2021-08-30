@@ -19,7 +19,7 @@ for _ in 0..100 {
 }
 ```
 
-You can fit any stopwords and ngrams or build default ones with `tools` module.
+You can fit any startwords and ngrams or build default ones with `tools` module.
 ```rust
 let ngrams = mchain::tools::get_ngrams(4, &text);
 let startwords = mchain::tools::get_startwords(&text);
